@@ -42,6 +42,9 @@ class NewGameController extends ChangeNotifier {
 
   GlobalKey<AutoCompleteTextFieldState<String>> key = GlobalKey<AutoCompleteTextFieldState<String>>();
 
+  double get minScore => players.map((e) => e.score).reduce((value, element) => value < element ? value : element);
+  double get maxScore => players.map((e) => e.score).reduce((value, element) => value > element ? value : element);
+
   FocusNode addPlayerFocusNode = FocusNode();
   List<GamePlayer> get players => game.gamePlayers;
 

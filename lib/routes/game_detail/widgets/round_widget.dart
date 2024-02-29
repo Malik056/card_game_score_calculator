@@ -1,6 +1,7 @@
 import 'package:card_game_calculator/configs/size_config.dart';
 import 'package:card_game_calculator/models/round.dart';
 import 'package:card_game_calculator/models/round_player.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RoundWidget extends StatelessWidget {
@@ -11,9 +12,11 @@ class RoundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final roundPlayers = List<RoundPlayer>.from(round.roundPlayers);
     roundPlayers.sort((a, b) {
-      return b.score.compareTo(a.score);
+      return a.score.compareTo(b.score);
     });
-    final max = roundPlayers.first.score;
+    final max = roundPlayers.last.score;
+    final min = roundPlayers.first.score;
+
     return Card(
       child: Container(
         padding: EdgeInsets.all(8.0.w),
@@ -76,14 +79,16 @@ class RoundWidget extends StatelessWidget {
                             TextSpan(
                               text: roundPlayers[i].score.toStringAsFixed(2),
                               children: [
-                                if (roundPlayers[i].score == max)
+                                if (roundPlayers[i].score == min || roundPlayers[i].score == max)
                                   WidgetSpan(
                                     alignment: PlaceholderAlignment.middle,
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 4.w),
-                                      child: const Icon(
-                                        Icons.military_tech,
-                                        color: Colors.blueGrey,
+                                      child: Icon(
+                                        roundPlayers[i].score == min
+                                            ? Icons.emoji_events //
+                                            : CupertinoIcons.hand_thumbsdown_fill,
+                                        color: roundPlayers[i].score == min ? Colors.yellow.shade700 : null,
                                       ),
                                     ),
                                   ),

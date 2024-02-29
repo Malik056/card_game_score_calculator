@@ -1,10 +1,8 @@
 import 'package:card_game_calculator/configs/size_config.dart';
 import 'package:card_game_calculator/models/game.dart';
-import 'package:card_game_calculator/providers/ads_provider.dart';
 import 'package:card_game_calculator/routes/game_detail/widgets/game_widget.dart';
 import 'package:card_game_calculator/routes/game_detail/widgets/round_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class GameDetailsRoute extends StatelessWidget {
   static const routeName = "/game_details";
@@ -13,10 +11,6 @@ class GameDetailsRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Game game = (ModalRoute.of(context)!.settings.arguments as Map)['game'];
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final adsProvider = context.read<AdsProvider>();
-      adsProvider.rewardAd?.show();
-    });
     return Scaffold(
       appBar: AppBar(
         title: const Text("Game"),

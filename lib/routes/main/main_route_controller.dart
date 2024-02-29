@@ -33,7 +33,9 @@ class MainRouteController extends ChangeNotifier {
   void onAdsProviderUpdate() async {
     if ((await _adsProvider.rewardAd?.isLoaded) == true && !startAdShown) {
       startAdShown = true;
+      loadingMessage = null;
       _adsProvider.rewardAd?.show();
+      notifyListeners();
     }
   }
 

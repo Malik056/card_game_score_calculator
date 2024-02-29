@@ -4,6 +4,7 @@ import 'package:card_game_calculator/enums/game_status.dart';
 import 'package:card_game_calculator/models/game.dart';
 import 'package:card_game_calculator/routes/new_game/new_game_controller.dart';
 import 'package:card_game_calculator/widgets/screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -97,25 +98,24 @@ class _NewGameRouteContent extends StatelessWidget {
       builder: (context, controller, _) {
         return Screen(
           child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                controller.getTitle,
-              ),
-              actions: [
-                TextButton(
-                  onPressed: controller.onSubmit,
-                  child: Text(
-                    controller.getActionString,
-                  ),
+              appBar: AppBar(
+                title: Text(
+                  controller.getTitle,
                 ),
-              ],
-            ),
-            body: controller.game.status == GameStatus.draft //
-                ? _buildPlayerInputScreen(controller)
-                : controller.game.status == GameStatus.inProgress
-                    ? _buildScoreEntry(context)
-                    : const SizedBox()
-          ),
+                actions: [
+                  TextButton(
+                    onPressed: controller.onSubmit,
+                    child: Text(
+                      controller.getActionString,
+                    ),
+                  ),
+                ],
+              ),
+              body: controller.game.status == GameStatus.draft //
+                  ? _buildPlayerInputScreen(controller)
+                  : controller.game.status == GameStatus.inProgress
+                      ? _buildScoreEntry(context)
+                      : const SizedBox()),
         );
       },
     );
@@ -148,7 +148,21 @@ class _NewGameRouteContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(player.player.name),
+                  Text.rich(
+                    TextSpan(
+                      text: player.player.name,
+                      children: [
+                        if (controller.game.currentRound > 0 && (player.score == controller.minScore || player.score == controller.maxScore))
+                          WidgetSpan(
+                            child: Icon(
+                              player.score == controller.minScore
+                                  ? Icons.emoji_events //
+                                  : CupertinoIcons.hand_thumbsdown_fill,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: 4.w),
                   Text(
                     "Trial by ${player.score.toStringAsFixed(2)}",
